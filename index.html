@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificación de Edad</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilo para una transición suave */
+        #main-content, .neon-button {
+            transition: all 0.3s ease-in-out;
+        }
+        /* Asegura que el contenido esté sobre la superposición del fondo */
+        .content-container {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Estilos para el efecto neón en hover */
+        .neon-violet-hover:hover {
+            background-color: #9333ea; /* purple-600 */
+            box-shadow: 0 0 5px #c084fc, 0 0 15px #c084fc, 0 0 25px #c084fc;
+        }
+
+        .neon-green-hover:hover {
+            background-color: #22c55e; /* green-500 */
+            box-shadow: 0 0 5px #4ade80, 0 0 15px #4ade80, 0 0 25px #4ade80;
+        }
+    </style>
+</head>
+<body class="text-white font-sans">
+
+    <!-- Contenedor para el fondo y la superposición -->
+    <div class="fixed inset-0 w-full h-full">
+        <!-- Imagen de fondo de la página -->
+        <div class="absolute inset-0 w-full h-full bg-cover bg-center" style="background-image: url('https://raw.githubusercontent.com/cannabisshop/Presentaci-n/main/canna.jpg')"></div>
+        <!-- Superposición oscura para mejorar la legibilidad -->
+        <div class="absolute inset-0 w-full h-full bg-black bg-opacity-50"></div>
+    </div>
+
+    <!-- Modal de Verificación de Edad -->
+    <div id="age-gate-modal" class="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
+        <div class="bg-gray-800 p-8 rounded-2xl shadow-2xl text-center max-w-sm mx-4">
+            <h2 class="text-2xl font-bold mb-4">Verificación de Edad</h2>
+            <p class="mb-6 text-gray-400">¿Eres mayor de 18 años?</p>
+            <div class="flex justify-center gap-4">
+                <button id="no-button" class="neon-button bg-red-600 text-white font-bold py-2 px-6 rounded-lg neon-violet-hover">
+                    No
+                </button>
+                <button id="yes-button" class="neon-button bg-green-600 text-white font-bold py-2 px-6 rounded-lg neon-green-hover">
+                    Sí
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido Principal (inicialmente oculto) -->
+    <div id="main-content" class="content-container min-h-screen flex-col justify-center items-center p-6 opacity-0 hidden">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold">Bienvenido a nuestros dispensarios</h1>
+            <p class="text-gray-300 mt-2">Selecciona una de nuestras secciones para explorar.</p>
+        </header>
+
+        <!-- Secciones de Misión y Confianza -->
+        <div class="max-w-4xl mx-auto mb-12 bg-gray-900 bg-opacity-70 p-8 rounded-2xl">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-center mb-4 text-indigo-400">Misión: Conexión Segura para el Bienestar</h2>
+                <p class="text-gray-300 text-center leading-relaxed">Nuestra misión es transformar el acceso al cannabis medicinal en Argentina, conectando de forma segura, legal y transparente a pacientes con REPROCANN y productores autorizados, garantizando calidad, privacidad y confianza en cada interacción.</p>
+            </div>
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-center mb-4 text-teal-400">Un Ecosistema de Confianza</h2>
+                <p class="text-gray-300 text-center leading-relaxed">Creamos un ecosistema cerrado y seguro. Verificamos rigurosamente que cada paciente tenga su REPROCANN vigente y que cada dispensario (ONG o productor) esté debidamente autorizado. Se eliminan los perfiles anónimos y se construye una comunidad basada en la confianza mutua.</p>
+            </div>
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-center mb-4 text-purple-400">Privacidad Innegociable</h2>
+                <p class="text-gray-300 text-center leading-relaxed">La privacidad es innegociable. Implementamos un sistema de verificación que confirma la validez del REPROCANN sin almacenar el documento. Toda comunicación entre paciente y dispensario ocurre a través de un chat interno con cifrado de extremo a extremo, asegurando que solo ellos puedan leer los mensajes.</p>
+            </div>
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-center mb-4 text-green-400">El Nexo Más Eficiente</h2>
+                <p class="text-gray-300 text-center leading-relaxed">Somos el nexo más eficiente. Los pacientes pueden buscar y filtrar productos según sus necesidades específicas (ubicación, tipo, potencia) en un solo lugar. Al mismo tiempo, ofrecemos flexibilidad a los productores, permitiéndoles mostrar su catálogo completo y simplemente marcar productos como "disponibles", "limitados" o "próximamente", adaptándose a sus ciclos de producción naturales.</p>
+            </div>
+            <div>
+                <h2 class="text-2xl font-bold text-center mb-4 text-yellow-400">Nacimos para Operar Dentro de la Ley</h2>
+                <p class="text-gray-300 text-center leading-relaxed">Nacimos para operar dentro del marco de la ley. La plataforma está diseñada para ser el canal legítimo que une las dos puntas de la cadena de cannabis medicinal, fomentando las buenas prácticas y preparándose para ser el estándar de la industria a medida que la regulación (ARICCAME) evolucione.</p>
+            </div>
+        </div>
+
+        <!-- Contenedor de Tarjetas -->
+        <div class="flex flex-wrap justify-center gap-8">
+            <!-- Tarjeta 1: Presentación -->
+            <div class="rounded-2xl shadow-lg overflow-hidden w-full max-w-sm transform hover:-translate-y-2 transition-transform duration-300 relative bg-cover bg-center" 
+                 style="background-image: url('https://raw.githubusercontent.com/cannabisshop/Presentaci-n/main/muestra%201.png?raw=true')">
+                <div class="absolute inset-0 bg-black bg-opacity-60 rounded-2xl"></div>
+                <div class="relative p-8 flex flex-col items-center text-center h-full">
+                    <h3 class="text-2xl font-bold mb-4">Presentación</h3>
+                    <p class="text-gray-300 mb-6 flex-grow">Descubre la presentación de nuestros productos y nuestra filosofía.</p>
+                    <a href="https://cannabisshop.github.io/Presentaci-n/" target="_blank" class="neon-button inline-block bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg mt-auto neon-violet-hover">
+                        Ingresar
+                    </a>
+                </div>
+            </div>
+
+            <!-- Tarjeta 2: Muestra -->
+            <div class="rounded-2xl shadow-lg overflow-hidden w-full max-w-sm transform hover:-translate-y-2 transition-transform duration-300 relative bg-cover bg-center" 
+                 style="background-image: url('https://raw.githubusercontent.com/cannabisshop/Presentaci-n/main/muestra%202.png?raw=true')">
+                <div class="absolute inset-0 bg-black bg-opacity-60 rounded-2xl"></div>
+                <div class="relative p-8 flex flex-col items-center text-center h-full">
+                    <h3 class="text-2xl font-bold mb-4">Muestrario</h3>
+                    <p class="text-gray-300 mb-6 flex-grow">Explora nuestro catálogo completo de productos seleccionados.</p>
+                    <a href="https://cannabisshop.github.io/muestra/" target="_blank" class="neon-button inline-block bg-teal-600 text-white font-bold py-3 px-6 rounded-lg mt-auto neon-green-hover">
+                        Ingresar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Obtener referencias a los elementos del DOM
+        const ageGateModal = document.getElementById('age-gate-modal');
+        const yesButton = document.getElementById('yes-button');
+        const noButton = document.getElementById('no-button');
+        const mainContent = document.getElementById('main-content');
+        const modalContent = ageGateModal.querySelector('div');
+
+        // Función para cuando el usuario hace clic en "Sí"
+        yesButton.addEventListener('click', () => {
+            ageGateModal.classList.add('opacity-0', 'pointer-events-none');
+            ageGateModal.addEventListener('transitionend', () => {
+                ageGateModal.remove();
+            });
+            mainContent.classList.remove('hidden');
+            setTimeout(() => {
+                mainContent.classList.remove('opacity-0');
+                mainContent.classList.add('flex');
+            }, 50);
+        });
+
+        // Función para cuando el usuario hace clic en "No"
+        noButton.addEventListener('click', () => {
+            modalContent.innerHTML = '<p class="text-lg text-gray-300">Debes ser mayor de edad para continuar. Por favor, cierra esta pestaña.</p>';
+            // Intentar cerrar la ventana. Nota: No todos los navegadores lo permiten.
+            setTimeout(() => window.close(), 1000);
+        });
+    </script>
+
+</body>
+</html>
